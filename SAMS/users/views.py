@@ -13,11 +13,11 @@ def register(request):
 		form=UserCreationForm(request.POST)
 		if form.is_valid():
 			form.save() ###add user to database
-			messages.success(request, f'Employee registered successfully!')
+			messages.success(request, f'Facilitator registered successfully!')
 			return redirect('dashboard')
 		
 
 
 	else:
 		form=UserCreationForm()
-	return render(request,'users/register.html', {'form' : form})
+	return render(request,'users/registerFacilitator.html', {'form' : form})

@@ -17,8 +17,12 @@ from django.contrib import admin
 from django.urls import path
 
 from users import views as users_views
+from recognition import views as recog_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('register/',users_views.register, name='register')
+    path('register/',users_views.register, name='register'),
+    path('', recog_views.login, name='login'),
+    path('dashboard/', recog_views.dashboard, name = 'dashboard')
+
 ]
