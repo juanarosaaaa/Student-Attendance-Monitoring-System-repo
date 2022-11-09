@@ -15,9 +15,6 @@ def register(request):
 			form.save() ###add user to database
 			messages.success(request, f'Facilitator registered successfully!')
 			return redirect('dashboard')
-		
-
-
 	else:
 		form=UserCreationForm()
 	return render(request,'users/registerFacilitator.html', {'form' : form})
