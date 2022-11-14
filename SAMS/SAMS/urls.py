@@ -23,6 +23,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('register/',users_views.register, name='register'),
     path('', recog_views.login, name='login'),
-    path('dashboard/', recog_views.dashboard, name = 'dashboard')
-
+    path('dashboard/', recog_views.dashboard, name = 'dashboard'),
+    path('not-authorised/', recog_views.not_authorised, name='not-authorised'),
+    path('attendanceIn/', recog_views.attendanceIn,name='attendanceIn'),
+    path('attendanceOut/', recog_views.attendanceOut,name='attendanceOut')
 ]

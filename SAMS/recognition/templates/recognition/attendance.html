@@ -26,8 +26,12 @@
     <div class="container">
         <div class="row bg-light .no-gutters rounded">
             <div class="form-row">
-                <button type="submit" class="btn btn-dark btn-block my-4 mx-5">Time in</button>
-                <button type="submit" class="btn btn-dark btn-block my-4 mx-5">Time out</button>
+                <div>
+                    <a href='{%url "attendanceIn" %}' class="btn btn-dark btn-block my-4 mx-5">Time in</a>
+                </div>
+                <div>
+                    <a href='{%url "attendanceOut" %}' class="btn btn-dark btn-block my-4 mx-5">Time out</a>
+                </div>
             </div>
         </div>
     </div>
