@@ -8,7 +8,7 @@ from django.contrib import messages
 @login_required
 def register(request):
 	if request.user.username!='admin':
-		return redirect('not-authorised')
+		return redirect('not-authorized')
 	if request.method=='POST':
 		form=UserCreationForm(request.POST)
 		if form.is_valid():

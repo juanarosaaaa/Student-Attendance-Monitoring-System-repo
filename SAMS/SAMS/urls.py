@@ -24,7 +24,7 @@ urlpatterns = [
     path('register/',users_views.register, name='register'),
     path('', recog_views.login, name='login'),
     path('dashboard/', recog_views.dashboard, name = 'dashboard'),
-    path('not-authorised/', recog_views.not_authorised, name='not-authorised'),
+    path('not-authorized/', recog_views.not_authorized, name='not-authorized'),
     path('attendanceIn/', recog_views.attendanceIn,name='attendanceIn'),
     path('attendanceOut/', recog_views.attendanceOut,name='attendanceOut')
 ]
