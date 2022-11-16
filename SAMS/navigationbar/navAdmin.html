@@ -13,77 +13,76 @@
     background: #fafafa;
     }
 
-    .wrapper {
-    display: flex;
-    align-items: stretch;
+    .mainNavbar .button{
+        border: 0;
     }
 
-    .sidebar {
+    .sidebar{
+        background-color: #e3f2fd;
         min-width: 250px;
-        max-width: 250px;
-        min-height: 100vh;
-        background-color:#adb5bd;
-        transition: all 0.3s;
+        min-height: 100%;
     }
 
-    .sidebar.active {
-        margin-left: -250px;
+    .navbar-collapse {
+        position: fixed;
+        left: 0;
+        height: 100%;
     }
 
-    a, a:hover, a:focus {
-    color: inherit;
-    text-decoration: none;
-    transition: all 0.3s;
+    .navbar-collapse.collapsing {
+        height: 100%;
+        -webkit-transition: left 0.1s ease;
+        -o-transition: left 0.1s ease;
+        -moz-transition: left 0.1s ease;
+        transition: left 0.1s ease;
+        left: -100%;
     }
 
-    .sidebar ul li a {
-    padding: 10px;
-    font-size: 1.1em;
-    display: block;
+    .navbar-collapse.show {
+        left: 0;
+        transition: left 0.3s ease-in;
     }
 
-    .sidebar ul li a:hover {
-    color: #000000;
-    background: #fff;
+    .logo-image{
+        width: 120px;
+        height: 120px;
     }
-
-    .sidebar ul li.active > a, a[aria-expanded="true"] {
-        color: #fff;
-        background: #262628;
-    }
-    ul ul a {
-        font-size: 0.9em !important;
-        padding-left: 30px !important;
-        background: #6d7fcc;
+    .img{
+        display: flex;
+        justify-content: center;
     }
 
 </style>
 
 </head>
 <body>
-    <div id="mainNavbar ">
-        <div class="container-fluid btn-dark">
-            <nav class="navbar navbar-expand-lg navbar-dark">
-                <div class="sidebar-header ">
-                    <a href=""><i class="fa fa-bars"></i></a>
-                    <h5>Student Attendance Monitoring System</h5>
-                </div>
+    <div class="mainNavbar ">
+            <nav class="navbar navbar-expand-xxl navbar-light" style="background-color: #e3f2fd;">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    <a href="#" class="navbar-brand">Student Attendance Monitoring System</a>
+                </button>
             </nav>
-        </div>
     </div>
         
     </div>
-    <div class="wrapper">
-        <nav class="sidebar navbar-expand-lg btn-dark">
-            <ul class="list-unstyled components btn-light">
-                <li class="active">
-                    <a href="#">Attendance</a>
+    <div class="show navbar-collapse" id="navbarNav">
+        <nav class="sidebar navbar-expand-xxl navbar-light">
+            <div class="logo-image">
+                <img class="img-fluid mx-5" src="/assets/BatStateU-NEU-Logo.png" alt="batstateu logo">
+            </div>
+            <ul class="navbar-nav mr-auto mx-5 my-3">
+                <li class="nav-item active">
+                    <a href="#" class="nav-link">
+                        Attendance
+                        <span class="sr-only">(current)</span>
+                    </a>
                 </li>
-                <li>
-                    <a href="#">Attendance List</a>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Attendance List</a>
                 </li>
-                <li>
-                    <a href="#">About us</a>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">About us</a>
                 </li>
             </ul>
         </nav>
