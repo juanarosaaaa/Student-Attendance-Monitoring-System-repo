@@ -102,7 +102,7 @@
                     <span class="glyphicon glyphicon-plus"></span>Add
                 </a>
                 <div class="table-responsive-sm">
-                    <table class="table table-bordered table-striped table-hover table-sm" style = "margin-top:20px;">
+                    <table class="table table-borderless table-striped table-hover table-sm" style = "margin-top:20px;">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -150,105 +150,205 @@
            
                 </div>
             </div>
-            <!--Add new-->
 
-<div class="modal fade" id="addnew" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <center>
-                    <h4 class="modal-title" id="myModalLabel">Add New</h4>
-                </center>
-            </div>
-            <div class="modal-body">
-                <div class = "container-fluid">
-                    <form  method="POST">
-                        <div class="page-header mb-4">
-                            <h4>Personal Information</h4>
+            <!-------------------------------------Add new MODAL ------------------------------------->
+
+            <div class="modal fade" id="addnew" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel">Add New</h4>
+                            </center>
                         </div>
-                        <div class="form-row mb-3">
-                            <div class="col">
-                                <label for="inputLastname">Lastname</label>
-                                <input type="text" class="form-control" id="inputLastname" name="lastname" placeholder="Lastname">    
-                            </div>
-                            <div class="col">
-                                <label for="inputFirstname">Firstname</label>
-                                <input type="text" class="form-control" name="firstname" placeholder="Firstname">
-                            </div>
-                            <div class="col-3">
-                                <label for="inputMiddlename">M.I.</label>
-                                <input type="text" class="form-control" name="middlename" placeholder="M.I.">
+                        <div class="modal-body">
+                            <div class = "container-fluid">
+                                <form  method="POST">
+                                    <div class="page-header mb-4">
+                                        <h4>Personal Information</h4>
+                                    </div>
+                                    <div class="form-row mb-3">
+                                        <div class="col">
+                                            <label for="inputLastname">Lastname</label>
+                                            <input type="text" class="form-control" id="inputLastname" name="lastname" placeholder="Lastname">    
+                                        </div>
+                                        <div class="col">
+                                            <label for="inputFirstname">Firstname</label>
+                                            <input type="text" class="form-control" name="firstname" placeholder="Firstname">
+                                        </div>
+                                        <div class="col-3">
+                                            <label for="inputMiddlename">M.I.</label>
+                                            <input type="text" class="form-control" name="middlename" placeholder="M.I.">
+                                        </div>
+                                    </div>
+                                    <div class="form-row mb-3">
+                                        <div class="col">
+                                            <label for="inputGender">Gender</label>
+                                            <select name="gender" id="inputGender" class="form-control">
+                                                <option selected>Choose...</option>
+                                                <option value="1">Female</option>
+                                                <option value="2">Male</option>
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <label for="inputContact">Contact No.</label>
+                                            <input type="text" class="form-control" name="contact" placeholder="Contact No.">
+                                        </div>
+                                    </div>
+                                    <div class="form-row mb-3">
+                                        <div class="col">
+                                            <label for="inputAddress">Address</label>
+                                            <input type="text" class="form-control" name="address" placeholder="Address">
+                                        </div>
+                                    </div>
+                                    <div class="form-row mb-3">
+                                        <div class="col">
+                                            <label for="inputGradelvl">Grade Level</label>
+                                            <select name="gradelvl" id="inputGradelvl" class="form-control">
+                                                <option selected>Choose...</option>
+                                                <option value="1">VII</option>
+                                                <option value="2">VIII</option>
+                                                <option value="3">IX</option>
+                                                <option value="4">X</option>
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <label for="inputSection">Section</label>
+                                            <input type="text" class="form-control" name="section" placeholder="Section">
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 mb-4">
+                                        <h4>Parent/Guardian Information</h4>
+                                    </div>
+                                    <div class="form-row mb-3">
+                                        <div class="col-7">
+                                            <label for="inputFullname">Fullname</label>
+                                            <input type="text" class="form-control" name="fullname" placeholder="Fullname">
+                                        </div>
+                                        <div class="col">
+                                            <label for="inputGContact">Contact No.</label>
+                                            <input type="text" class="form-control" name="gcontact" placeholder="Contact No.">
+                                        </div>
+                                    </div>
+                                    <div class="form-row mb-3">
+                                        <div class="col">
+                                            <label for="inputAddress">Address</label>
+                                            <input type="text" class="form-control" name="address" placeholder="Address">
+                                        </div>
+                                    </div>
                             </div>
                         </div>
-                        <div class="form-row mb-3">
-                            <div class="col">
-                                <label for="inputGender">Gender</label>
-                                <select name="gender" id="inputGender" class="form-control">
-                                    <option selected>Choose...</option>
-                                    <option value="1">Female</option>
-                                    <option value="2">Male</option>
-                                </select>
-                            </div>
-                            <div class="col">
-                                <label for="inputContact">Contact No.</label>
-                                <input type="text" class="form-control" name="contact" placeholder="Contact No.">
-                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+                                <span class="glyphicon glyphicon-remove"></span>Cancel
+                            </button>
+                            <button type="submit" name="add" class="btn btn-success">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>Save</a>
+                            </button>
+                                </form>
                         </div>
-                        <div class="form-row mb-3">
-                            <div class="col">
-                                <label for="inputAddress">Address</label>
-                                <input type="text" class="form-control" name="address" placeholder="Address">
-                            </div>
-                        </div>
-                        <div class="form-row mb-3">
-                            <div class="col">
-                                <label for="inputGradelvl">Grade Level</label>
-                                <select name="gradelvl" id="inputGradelvl" class="form-control">
-                                    <option selected>Choose...</option>
-                                    <option value="1">VII</option>
-                                    <option value="2">VIII</option>
-                                    <option value="3">IX</option>
-                                    <option value="4">X</option>
-                                </select>
-                            </div>
-                            <div class="col">
-                                <label for="inputSection">Section</label>
-                                <input type="text" class="form-control" name="section" placeholder="Section">
-                            </div>
-                        </div>
-                        <div class="mt-4 mb-4">
-                            <h4>Parent/Guardian Information</h4>
-                        </div>
-                        <div class="form-row mb-3">
-                            <div class="col-7">
-                                <label for="inputFullname">Fullname</label>
-                                <input type="text" class="form-control" name="fullname" placeholder="Fullname">
-                            </div>
-                            <div class="col">
-                                <label for="inputGContact">Contact No.</label>
-                                <input type="text" class="form-control" name="gcontact" placeholder="Contact No.">
-                            </div>
-                        </div>
-                        <div class="form-row mb-3">
-                            <div class="col">
-                                <label for="inputAddress">Address</label>
-                                <input type="text" class="form-control" name="address" placeholder="Address">
-                            </div>
-                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
-                    <span class="glyphicon glyphicon-remove"></span>Cancel
-                </button>
-                <button type="submit" name="add" class="btn btn-success">
-                    <span class="glyphicon glyphicon-floppy-disk"></span>Save</a>
-                </button>
-                    </form>
+
+            <!-------------------------------EDIT MODAL------------------------->
+            <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel">Edit Student</h4>
+                            </center>
+                        </div>
+                        <div class="modal-body">
+                            <div class = "container-fluid">
+                                <form  method="POST">
+                                    <div class="page-header mb-4">
+                                        <h4>Personal Information</h4>
+                                    </div>
+                                    <div class="form-row mb-3">
+                                        <div class="col">
+                                            <label for="inputLastname">Lastname</label>
+                                            <input type="text" class="form-control" id="inputLastname" name="lastname" placeholder="Lastname" value="">    
+                                        </div>
+                                        <div class="col">
+                                            <label for="inputFirstname">Firstname</label>
+                                            <input type="text" class="form-control" name="firstname" placeholder="Firstname" value="">
+                                        </div>
+                                        <div class="col-3">
+                                            <label for="inputMiddlename">M.I.</label>
+                                            <input type="text" class="form-control" name="middlename" placeholder="M.I." value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-row mb-3">
+                                        <div class="col">
+                                            <label for="inputGender">Gender</label>
+                                            <select name="gender" id="inputGender" class="form-control">
+                                                <option selected>Choose...</option>
+                                                <option value="1">Female</option>
+                                                <option value="2">Male</option>
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <label for="inputContact">Contact No.</label>
+                                            <input type="text" class="form-control" name="contact" placeholder="Contact No." value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-row mb-3">
+                                        <div class="col">
+                                            <label for="inputAddress">Address</label>
+                                            <input type="text" class="form-control" name="address" placeholder="Address" value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-row mb-3">
+                                        <div class="col">
+                                            <label for="inputGradelvl">Grade Level</label>
+                                            <select name="gradelvl" id="inputGradelvl" class="form-control">
+                                                <option selected>Choose...</option>
+                                                <option value="1">VII</option>
+                                                <option value="2">VIII</option>
+                                                <option value="3">IX</option>
+                                                <option value="4">X</option>
+                                            </select>
+                                        </div>
+                                        <div class="col">
+                                            <label for="inputSection">Section</label>
+                                            <input type="text" class="form-control" name="section" placeholder="Section" value="">
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 mb-4">
+                                        <h4>Parent/Guardian Information</h4>
+                                    </div>
+                                    <div class="form-row mb-3">
+                                        <div class="col-7">
+                                            <label for="inputFullname">Fullname</label>
+                                            <input type="text" class="form-control" name="fullname" placeholder="Fullname" value="">
+                                        </div>
+                                        <div class="col">
+                                            <label for="inputGContact">Contact No.</label>
+                                            <input type="text" class="form-control" name="gcontact" placeholder="Contact No." value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-row mb-3">
+                                        <div class="col">
+                                            <label for="inputAddress">Address</label>
+                                            <input type="text" class="form-control" name="address" placeholder="Address" value="">
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+                                <span class="glyphicon glyphicon-remove"></span>Cancel
+                            </button>
+                            <button type="submit" name="edit" class="btn btn-success">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>Save</a>
+                            </button>
+                                </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
