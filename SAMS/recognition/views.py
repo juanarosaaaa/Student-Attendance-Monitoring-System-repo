@@ -193,7 +193,7 @@ def dashboard(request):
         return render(request,'recognition/attendance.html')
 
 @login_required
-def not_authorised(request):
+def not_authorized(request):
 
     return render(request,'recognition/notAuthorized.html')
 
