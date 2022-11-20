@@ -22,7 +22,11 @@ import matplotlib.pyplot as plt
 from matplotlib import rcParams
 from sklearn.manifold import TSNE
 from users.models import Present, Time
-
+from pandas.plotting import register_matplotlib_converters
+import math
+from django_pandas.io import read_frame
+import seaborn as sns
+import pandas as pd
 
 
 #utilities
@@ -175,6 +179,322 @@ def update_attendance_in_db_in(present):
             a=Time(user=user,date=today,time=time, out=False)
             a.save()
 
+def update_attendance_in_db_out(present):
+	today=datetime.date.today()
+	time=datetime.datetime.now()
+	for person in present:
+		user=User.objects.get(username=person)
+		if present[person]==True:
+			a=Time(user=user,date=today,time=time, out=True)
+			a.save()
+
+def convert_hours_to_hours_mins(hours):
+	
+	h=int(hours)
+	hours-=h
+	m=hours*60
+	m=math.ceil(m)
+	return str(str(h)+ " hrs " + str(m) + "  mins")
+
+
+#used
+def hours_vs_date_given_employee(present_qs,time_qs,admin=True):
+	register_matplotlib_converters()
+	df_hours=[]
+	df_break_hours=[]
+	qs=present_qs
+
+	for obj in qs:
+		date=obj.date
+		times_in=time_qs.filter(date=date).filter(out=False).order_by('time')
+		times_out=time_qs.filter(date=date).filter(out=True).order_by('time')
+		times_all=time_qs.filter(date=date).order_by('time')
+		obj.time_in=None
+		obj.time_out=None
+		obj.hours=0
+		obj.break_hours=0
+		if (len(times_in)>0):			
+			obj.time_in=times_in.first().time
+			
+		if (len(times_out)>0):
+			obj.time_out=times_out.last().time
+
+		if(obj.time_in is not None and obj.time_out is not None):
+			ti=obj.time_in
+			to=obj.time_out
+			hours=((to-ti).total_seconds())/3600
+			obj.hours=hours
+		
+
+		else:
+			obj.hours=0
+
+		(check,break_hourss)= check_validity_times(times_all)
+		if check:
+			obj.break_hours=break_hourss
+
+
+		else:
+			obj.break_hours=0
+
+
+		
+		df_hours.append(obj.hours)
+		df_break_hours.append(obj.break_hours)
+		obj.hours=convert_hours_to_hours_mins(obj.hours)
+		obj.break_hours=convert_hours_to_hours_mins(obj.break_hours)
+			
+	
+	
+	
+	df = read_frame(qs)	
+	
+	
+	df["hours"]=df_hours
+	df["break_hours"]=df_break_hours
+
+	print(df)
+	
+	sns.barplot(data=df,x='date',y='hours')
+	plt.xticks(rotation='vertical')
+	rcParams.update({'figure.autolayout': True})
+	plt.tight_layout()
+	if(admin):
+		plt.savefig('./recognition/static/recognition/img/attendance_graphs/hours_vs_date/1.png')
+		plt.close()
+	else:
+		plt.savefig('./recognition/static/recognition/img/attendance_graphs/employee_login/1.png')
+		plt.close()
+	return qs
+
+
+def hours_vs_employee_given_date(present_qs,time_qs):
+	register_matplotlib_converters()
+	df_hours=[]
+	df_break_hours=[]
+	df_username=[]
+	qs=present_qs
+
+	for obj in qs:
+		user=obj.user
+		times_in=time_qs.filter(user=user).filter(out=False)
+		times_out=time_qs.filter(user=user).filter(out=True)
+		times_all=time_qs.filter(user=user)
+		obj.time_in=None
+		obj.time_out=None
+		obj.hours=0
+		obj.hours=0
+		if (len(times_in)>0):			
+			obj.time_in=times_in.first().time
+		if (len(times_out)>0):
+			obj.time_out=times_out.last().time
+		if(obj.time_in is not None and obj.time_out is not None):
+			ti=obj.time_in
+			to=obj.time_out
+			hours=((to-ti).total_seconds())/3600
+			obj.hours=hours
+		else:
+			obj.hours=0
+		(check,break_hourss)= check_validity_times(times_all)
+		if check:
+			obj.break_hours=break_hourss
+
+
+		else:
+			obj.break_hours=0
+
+		
+		df_hours.append(obj.hours)
+		df_username.append(user.username)
+		df_break_hours.append(obj.break_hours)
+		obj.hours=convert_hours_to_hours_mins(obj.hours)
+		obj.break_hours=convert_hours_to_hours_mins(obj.break_hours)
+
+	
+
+
+
+	df = read_frame(qs)	
+	df['hours']=df_hours
+	df['username']=df_username
+	df["break_hours"]=df_break_hours
+
+
+	sns.barplot(data=df,x='username',y='hours')
+	plt.xticks(rotation='vertical')
+	rcParams.update({'figure.autolayout': True})
+	plt.tight_layout()
+	plt.savefig('./recognition/static/recognition/img/attendance_graphs/hours_vs_employee/1.png')
+	plt.close()
+	return qs
+
+
+def total_number_employees():
+	qs=User.objects.all()
+	return (len(qs) -1)
+	# -1 to account for admin 
+
+
+
+def employees_present_today():
+	today=datetime.date.today()
+	qs=Present.objects.filter(date=today).filter(present=True)
+	return len(qs)
+
+
+
+
+#used	
+def this_week_emp_count_vs_date():
+	today=datetime.date.today()
+	some_day_last_week=today-datetime.timedelta(days=7)
+	monday_of_last_week=some_day_last_week-  datetime.timedelta(days=(some_day_last_week.isocalendar()[2] - 1))
+	monday_of_this_week = monday_of_last_week + datetime.timedelta(days=7)
+	qs=Present.objects.filter(date__gte=monday_of_this_week).filter(date__lte=today)
+	str_dates=[]
+	emp_count=[]
+	str_dates_all=[]
+	emp_cnt_all=[]
+	cnt=0
+	
+	
+
+
+
+	for obj in qs:
+		date=obj.date
+		str_dates.append(str(date))
+		qs=Present.objects.filter(date=date).filter(present=True)
+		emp_count.append(len(qs))
+
+
+	while(cnt<5):
+
+		date=str(monday_of_this_week+datetime.timedelta(days=cnt))
+		cnt+=1
+		str_dates_all.append(date)
+		if(str_dates.count(date))>0:
+			idx=str_dates.index(date)
+
+			emp_cnt_all.append(emp_count[idx])
+		else:
+			emp_cnt_all.append(0)
+
+	
+	
+	
+
+
+
+	df=pd.DataFrame()
+	df["date"]=str_dates_all
+	df["Number of employees"]=emp_cnt_all
+	
+	
+	sns.lineplot(data=df,x='date',y='Number of employees')
+	plt.savefig('./recognition/static/recognition/img/attendance_graphs/this_week/1.png')
+	plt.close()
+
+
+
+
+
+
+#used
+def last_week_emp_count_vs_date():
+	today=datetime.date.today()
+	some_day_last_week=today-datetime.timedelta(days=7)
+	monday_of_last_week=some_day_last_week-  datetime.timedelta(days=(some_day_last_week.isocalendar()[2] - 1))
+	monday_of_this_week = monday_of_last_week + datetime.timedelta(days=7)
+	qs=Present.objects.filter(date__gte=monday_of_last_week).filter(date__lt=monday_of_this_week)
+	str_dates=[]
+	emp_count=[]
+
+
+	str_dates_all=[]
+	emp_cnt_all=[]
+	cnt=0
+	
+	
+
+
+
+	for obj in qs:
+		date=obj.date
+		str_dates.append(str(date))
+		qs=Present.objects.filter(date=date).filter(present=True)
+		emp_count.append(len(qs))
+
+
+	while(cnt<5):
+
+		date=str(monday_of_last_week+datetime.timedelta(days=cnt))
+		cnt+=1
+		str_dates_all.append(date)
+		if(str_dates.count(date))>0:
+			idx=str_dates.index(date)
+
+			emp_cnt_all.append(emp_count[idx])
+			
+		else:
+			emp_cnt_all.append(0)
+
+	
+	
+	
+
+
+
+	df=pd.DataFrame()
+	df["date"]=str_dates_all
+	df["emp_count"]=emp_cnt_all
+	
+
+	
+	
+	sns.lineplot(data=df,x='date',y='emp_count')
+	plt.savefig('./recognition/static/recognition/img/attendance_graphs/last_week/1.png')
+	plt.close()
+
+
+def check_validity_times(times_all):
+
+	if(len(times_all)>0):
+		sign=times_all.first().out
+	else:
+		sign=True
+	times_in=times_all.filter(out=False)
+	times_out=times_all.filter(out=True)
+	if(len(times_in)!=len(times_out)):
+		sign=True
+	break_hourss=0
+	if(sign==True):
+			check=False
+			break_hourss=0
+			return (check,break_hourss)
+	prev=True
+	prev_time=times_all.first().time
+
+	for obj in times_all:
+		curr=obj.out
+		if(curr==prev):
+			check=False
+			break_hourss=0
+			return (check,break_hourss)
+		if(curr==False):
+			curr_time=obj.time
+			to=curr_time
+			ti=prev_time
+			break_time=((to-ti).total_seconds())/3600
+			break_hourss+=break_time
+
+
+		else:
+			prev_time=obj.time
+
+		prev=curr
+
+	return (True,break_hourss)
 
 
 
@@ -402,3 +722,70 @@ def attendanceOut(request):
     cv2.destroyAllWindows()
     update_attendance_in_db_out(present)
     return redirect('home')
+
+
+
+@login_required
+def train(request):
+	if request.user.username!='admin':
+		return redirect('not-authorised')
+
+	training_dir='face_recognition_data/training_dataset'
+	
+	
+	
+	count=0
+	for person_name in os.listdir(training_dir):
+		curr_directory=os.path.join(training_dir,person_name)
+		if not os.path.isdir(curr_directory):
+			continue
+		for imagefile in image_files_in_folder(curr_directory):
+			count+=1
+
+	X=[]
+	y=[]
+	i=0
+
+
+	for person_name in os.listdir(training_dir):
+		print(str(person_name))
+		curr_directory=os.path.join(training_dir,person_name)
+		if not os.path.isdir(curr_directory):
+			continue
+		for imagefile in image_files_in_folder(curr_directory):
+			print(str(imagefile))
+			image=cv2.imread(imagefile)
+			try:
+				X.append((face_recognition.face_encodings(image)[0]).tolist())
+				
+
+				
+				y.append(person_name)
+				i+=1
+			except:
+				print("removed")
+				os.remove(imagefile)
+
+			
+
+
+	targets=np.array(y)
+	encoder = LabelEncoder()
+	encoder.fit(y)
+	y=encoder.transform(y)
+	X1=np.array(X)
+	print("shape: "+ str(X1.shape))
+	np.save('face_recognition_data/classes.npy', encoder.classes_)
+	svc = SVC(kernel='linear',probability=True)
+	svc.fit(X1,y)
+	svc_save_path="face_recognition_data/svc.sav"
+	with open(svc_save_path, 'wb') as f:
+		pickle.dump(svc,f)
+
+	
+	vizualize_Data(X1,targets)
+	
+	messages.success(request, f'Training Complete.')
+
+	return render(request,"recognition/train.html")
+

@@ -6,7 +6,7 @@ from django.contrib import messages
 # Create your views here.
 
 @login_required
-def register(request):
+def registerFacilitator(request):
 	if request.user.username!='admin':
 		return redirect('not-authorized')
 	if request.method=='POST':
@@ -18,3 +18,17 @@ def register(request):
 	else:
 		form=UserCreationForm()
 	return render(request,'users/registerFacilitator.html', {'form' : form})
+
+@login_required
+def addStudent(request):
+	if request.user.username!='admin':
+		return redirect('not-authorized')
+	if request.method=='POST':
+		form=UserCreationForm(request.POST)
+		if form.is_valid():
+			form.save() ###add user to database
+			messages.success(request, f'Student added successfully!')
+			return redirect('dashboard')
+	else:
+		form=UserCreationForm()
+	return render(request,'users/addStudent.html', {'form' : form})

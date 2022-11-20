@@ -21,10 +21,12 @@ from recognition import views as recog_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('register/',users_views.register, name='register'),
+    path('register/',users_views.registerFacilitator, name='register-facilitator'),
+    path('add-student/', users_views.addStudent, name = 'add-student'),
     path('', recog_views.login, name='login'),
     path('dashboard/', recog_views.dashboard, name = 'dashboard'),
     path('not-authorized/', recog_views.not_authorized, name='not-authorized'),
     path('attendanceIn/', recog_views.attendanceIn,name='attendanceIn'),
-    path('attendanceOut/', recog_views.attendanceOut,name='attendanceOut')
+    path('attendanceOut/', recog_views.attendanceOut,name='attendanceOut'),
+    path('train/', recog_views.train, name='train'),
 ]
