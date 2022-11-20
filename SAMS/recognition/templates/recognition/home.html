@@ -1,65 +1,12 @@
-{% load crispy_forms_tags %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SAMS | Sign in</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <style>
-        *{
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-        }
-        body{
-            background: rgb(219, 225, 225);
-        }
-        .container{
-            margin-top: 100px;
-            width: fit-content;
-        }
-    </style>
+    <title>Document</title>
 </head>
 <body>
-    <section class="form my-4">
-        <div class="container">
-            <div class="row bg-light .no-gutters rounded">
-                <div class="col-sm-7">
-                    <img src="https://picsum.photos/id/85/500/600" class="img-fluid rounded" alt="">
-                </div>
-                <div class="col-sm-5">
-                    <form method="POST"> 
-                        {% csrf_token %}
-                        <h1 class="display-3">Sign in</h1>
-                        <div class="form-group">
-                            <label for="email">Username</label>
-                            <input type="text" class="form-control" id="email" placeholder="Enter email">
-                            <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
-                        </div>
-                        <div class="form-group">
-                            <label for="pass">Password</label>
-                            <input type="password" class="form-control" id="pass" placeholder="Password">
-                        </div>
-                        <!--<div class="form-check">        put show password here
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">Show password</label>
-                        </div>-->
-                        <div class="form-row">
-                            <button type="submit" class="btn btn-dark btn-block my-4">Submit</button>
-                        </div>
-                        <a href="#">Forgot Password</a>
-                        {{form| crispy}}
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
+    
 </body>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </html>
