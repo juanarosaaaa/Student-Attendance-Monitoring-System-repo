@@ -1,32 +1,38 @@
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
-from SAMS.settings import BASE_DIR
-import dlib
-import cv2
-import pickle
-import imutils
-from imutils import face_utils
-from imutils.video import VideoStream
-from imutils.face_utils import FaceAligner
-from sklearn.preprocessing import LabelEncoder
-import numpy as np
-import time
 import datetime
+import math
 import os
+import pickle
+import time
+
+import cv2
+import dlib
 import face_recognition
-from face_recognition.face_recognition_cli import image_files_in_folder
+import imutils
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from matplotlib import rcParams
-from sklearn.manifold import TSNE
-from users.models import Present, Time
-from pandas.plotting import register_matplotlib_converters
-import math
-from django_pandas.io import read_frame
-import seaborn as sns
+import numpy as np
 import pandas as pd
+import seaborn as sns
+from sklearn.svm import SVC
+from django.contrib import messages
+from django.db.models import Count
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.shortcuts import redirect, render
+from django_pandas.io import read_frame
+from face_recognition.face_recognition_cli import image_files_in_folder
+from imutils import face_utils
+from imutils.face_utils import FaceAligner
+from imutils.video import VideoStream
+from matplotlib import rcParams
+from pandas.plotting import register_matplotlib_converters
+from sklearn.manifold import TSNE
+from sklearn.preprocessing import LabelEncoder
+
+from SAMS.settings import BASE_DIR
+from users.models import Present, Time
+
+from .forms import DateForm, DateForm_2, UsernameAndDateForm, usernameForm
 
 
 #utilities
@@ -499,9 +505,18 @@ def check_validity_times(times_all):
 
 
 # Create your views here.
-def login(request):
+def home(request):
 
     return render(request, 'recognition/home.html')
+
+def attendance(request):
+
+    return render(request, 'recognition/attendance.html')
+
+def aboutUs(request):
+
+    return render(request, 'recognition/aboutUs.html')
+
 
 @login_required
 def dashboard(request):
@@ -511,6 +526,32 @@ def dashboard(request):
     else:
         print("not admin")
         return render(request,'recognition/attendance.html')
+
+
+@login_required
+def add_photos(request):
+	if request.user.username!='admin':
+		return redirect('not-authorised')
+	if request.method=='POST':
+		form=usernameForm(request.POST)
+		data = request.POST.copy()
+		username=data.get('username')
+		if username_present(username):
+			create_dataset(username)
+			messages.success(request, f'Dataset Created')
+			return redirect('add-photos')
+		else:
+			messages.warning(request, f'No such username found. Please add student first.')
+			return redirect('dashboard')
+
+
+	else:
+		
+
+			form=usernameForm()
+			return render(request,'recognition/add_photos.html', {'form' : form})
+
+
 
 @login_required
 def not_authorized(request):

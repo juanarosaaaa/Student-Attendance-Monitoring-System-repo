@@ -1,3 +1,5 @@
+{% load crispy_forms_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -156,6 +158,7 @@
                         <div class="modal-body">
                             <div class = "container-fluid">
                                 <form  method="POST">
+                                    {% csrf_token%}
                                     <div class="page-header mb-4">
                                         <h4>Personal Information</h4>
                                     </div>
@@ -206,6 +209,7 @@
                                             <input type="password" class="form-control" name="password" placeholder="Password">
                                         </div>
                                     </div>
+                                    {{form | crispy}}
                             </div>
                         </div>
                         <div class="modal-footer">
